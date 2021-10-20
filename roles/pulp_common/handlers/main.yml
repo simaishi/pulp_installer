@@ -31,6 +31,14 @@
     - ansible_facts.os_family == 'RedHat'
     - ansible_facts.selinux.status == "enabled"
 
+- name: Ensure assets has proper ownership
+  file:
+    path: '{{ pulp_user_home }}/assets'
+    state: directory
+    owner: '{{ pulp_user }}'
+    group: '{{ pulp_group }}'
+    recurse: true
+
 - name: Collect static content
   command: "{{ pulp_django_admin_path }} collectstatic --clear --noinput --link {{ pulp_collectstatic_ignore_list }}"
   register: staticresult
